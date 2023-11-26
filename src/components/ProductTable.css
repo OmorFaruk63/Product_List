@@ -1,0 +1,16 @@
+tr, td {
+ background-color: #35A29F;
+ color: black;
+ text-align: left;
+ padding: 8px;
+ text-align: center;
+ margin-bottom: 2px;
+}
+span{
+ cursor: pointer;
+ text-align: center;
+}
+span:hover{
+color: rgb(255, 1, 1);
+transform: scale(1.1);
+}
