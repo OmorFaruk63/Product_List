@@ -3,6 +3,9 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-image: url("https://img.freepik.com/free-photo/top-view-bunch-fresh-food-donation_23-2148733834.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .logo {
@@ -39,4 +42,17 @@
 
 .read-the-docs {
   color: #888;
+   ;
+}
+/*  */
+
+@media (max-width:550px) {
+  #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+    background-image: url("https://img.freepik.com/free-vector/shopping-bag-basket-composition-with-editable-text-grocery-goods-inside-string-bag-with-flexible-net_1284-54443.jpg");
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+  }
 }

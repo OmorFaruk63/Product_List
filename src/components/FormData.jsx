@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import "./FormData.css";
 import ProductTable from "./ProductTable";
 
-const FormData = () => {
-  const [product, setProduct] = useState(getData());
+import "./FormData.css";
 
+const FromData = () => {
+  //Get Data From LocalStorage
   function getData() {
     const jsonData = localStorage.getItem("product");
     if (jsonData) {
@@ -14,85 +14,95 @@ const FormData = () => {
       return [];
     }
   }
-  const [form, setForm] = useState({
-    productName: "",
-    productId: "",
-    price: "",
-    quantity: "",
-    color: "",
-  });
 
-  const { productName, productId, price, quantity, color } = form;
+  const [Product, setProduct] = useState(getData());
 
-  function getFormData(event) {
-    const { name, value } = event.target;
-    setForm((prevState) => ({ ...prevState, [name]: value }));
-  }
-
+  const elementsObj = {};
+  //  Product Submit
   function handleSubmit(e) {
     e.preventDefault();
-    setProduct([...product, form]);
 
-    setForm({
-      productName: "",
-      productId: "",
-      price: "",
-      quantity: "",
-      color: "",
+    //Collecting product id for unique id
+    const ary = [];
+    Product.map((item) => {
+      ary.push(item.productId);
     });
-    // console.log(formData);
+
+    const elements = [...e.target.elements];
+    elements.map((element) => {
+      //Checking input fild is Emty
+      if (element.value !== "") {
+        elementsObj[element.name] = element.value;
+      }
+      element.value = "";
+    });
+
+    //checking product Id
+    if (!ary.includes(elementsObj.productId)) {
+      setProduct([...Product, elementsObj]);
+    } else {
+      alert("Same Id");
+    }
+    console.log(elementsObj);
   }
 
+  // Add Product List LocalStorage
   useEffect(() => {
-    localStorage.setItem("product", JSON.stringify(product));
-  }, [product]);
+    localStorage.setItem("product", JSON.stringify(Product));
+  }, [Product]);
 
+  // Delete Product List
   function edite(id) {
-    const filterForm = product.filter((product) => {
+    const filterProduct = Product.filter((product) => {
       return product.productId !== id;
     });
-    setProduct(filterForm);
+    setProduct(filterProduct);
   }
+
   return (
     <div className="container">
       <div>
-        {/*---------------  Form-----------  */}
+        {/*-----------------------------Form---------------------  */}
         <form onSubmit={handleSubmit}>
-          Product Name:
+          <label htmlFor=""> Product Name:</label>
           <input
+            value={elementsObj.productName}
             autoFocus
             type="text"
-            value={productName}
             name="productName"
-            onChange={getFormData}
+            required
           />
           <br />
-          Product Id:
+          <label htmlFor="">Product Id:</label>
           <input
+            required
+            value={elementsObj.productId}
             type="number"
-            value={productId}
             name="productId"
-            onChange={getFormData}
-          />{" "}
+          />
           <br />
           Price:
           <input
+            required
+            value={elementsObj.price}
             type="number"
-            value={price}
             name="price"
-            onChange={getFormData}
           />
           <br />
           Quantity:
           <input
+            required
+            value={elementsObj.quantity}
             type="number"
-            value={quantity}
             name="quantity"
-            onChange={getFormData}
           />
           <br />
+          Description:
+          <br />
+          <textarea name="description" id="" cols="30" rows="4"></textarea>
           Choose a Color:
-          <select value={color} onChange={getFormData} name="color">
+          <br />
+          <select required name="color">
             <option value="">Choose Color</option>
             <option value="red">Red</option>
             <option value="green">Green</option>
@@ -106,9 +116,9 @@ const FormData = () => {
       </div>
 
       <div></div>
-      {/*---------------  Table-----------  */}
+      {/*--------------------------  Table---------------------  */}
 
-      {product.length < 1 ? (
+      {Product.length < 1 ? (
         <h1>No Product Added</h1>
       ) : (
         <table>
@@ -119,10 +129,11 @@ const FormData = () => {
               <th>Price</th>
               <th>Quantity</th>
               <th>Color</th>
+              <th>Description</th>
               <th>Delete</th>
             </tr>
-
-            {product.map((item) => (
+            {/*--------------------------  Table Raw---------------------  */}
+            {Product.map((item) => (
               <ProductTable key={item.productId} item={item} edite={edite} />
             ))}
           </tbody>
@@ -132,4 +143,4 @@ const FormData = () => {
   );
 };
 
-export default FormData;
+export default FromData;
