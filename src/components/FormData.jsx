@@ -100,6 +100,7 @@ const FromData = () => {
           Description:
           <br />
           <textarea name="description" id="" cols="30" rows="4"></textarea>
+          <br />
           Choose a Color:
           <br />
           <select required name="color">
